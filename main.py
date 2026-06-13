@@ -11,6 +11,11 @@ import sys
 from pathlib import Path
 import yaml
 
+# Ensure directories exist FIRST (before logging)
+Path('logs').mkdir(exist_ok=True)
+Path('config').mkdir(exist_ok=True)
+Path('data').mkdir(exist_ok=True)
+
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
@@ -84,11 +89,6 @@ class BotManager:
 
 async def main():
     """Main async entry point"""
-    # Ensure directories exist
-    Path('logs').mkdir(exist_ok=True)
-    Path('config').mkdir(exist_ok=True)
-    Path('data').mkdir(exist_ok=True)
-    
     # Load config
     config = load_config()
     
