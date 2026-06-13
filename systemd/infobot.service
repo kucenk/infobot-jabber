@@ -1,0 +1,24 @@
+[Unit]
+Description=InfoBot Jabber - Advanced XMPP Bot for Armbian
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=infobot
+WorkingDirectory=/home/infobot/infobot-jabber
+ExecStart=/home/infobot/infobot-jabber/venv/bin/python3 main.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+Environment="PYTHONUNBUFFERED=1"
+
+# Security & Resource limits
+PrivateTmp=yes
+NoNewPrivileges=yes
+MemoryLimit=512M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target

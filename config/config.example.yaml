@@ -1,0 +1,52 @@
+# InfoBot Jabber Configuration
+
+bot:
+  nick: "InfoBot"
+  jid: "infobot@jabber.ru"  # Change to your bot JID
+  password: "your_secure_password"  # Use env variable for production
+  
+# XMPP Servers to try (first available will be used)
+xmpp_servers:
+  - jabber.ru
+  - jabber.de
+  - neko.im
+  
+# OpenWeather API (get free key from openweathermap.org)
+openweather:
+  api_key: "your_api_key_here"
+  
+# Features toggle
+features:
+  weather: true
+  earthquake: true
+  monitoring: true
+  greetings: true
+
+# Bot rooms configuration
+rooms:
+  # Room 1
+  - name: "devroom@conference.jabber.ru"
+    nickname: "InfoBot"
+    admin_jid: "admin@jabber.ru"
+    welcome_message: "Halo! Saya InfoBot siap membantu 🤖"
+    language: "id"
+    enable_weather: true
+    weather_city: "Jakarta"
+    enable_earthquake: true
+    enable_monitoring: true
+    
+  # Room 2
+  - name: "monitoring@conference.neko.im"
+    nickname: "SysBot"
+    admin_jid: "sysadmin@neko.im"
+    welcome_message: "Selamat datang di ruangan monitoring 📊"
+    language: "id"
+    enable_weather: false
+    enable_earthquake: true
+    enable_monitoring: true
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  log_file: "logs/infobot.log"
