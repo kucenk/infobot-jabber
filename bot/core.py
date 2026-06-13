@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Set
 import slixmpp
 from slixmpp.exceptions import XMPPError
 from datetime import datetime
+import threading
 
 from bot.handlers import MessageHandler
 from modules.database import Database
@@ -130,11 +131,11 @@ class InfoBot(slixmpp.ClientXMPP):
         try:
             nick = room_config.get('nickname', self.bot_nick)
             
-            self['xep_0045'].join_muc(
-                room_jid,
-                nick,
-                wait=True
-            )
+            # Use join_muc without wait parameter for Slixmpp compatibility
+            self['xep_0045'].join_muc(room_jid, nick)
+            
+            # Small delay to allow join to process
+            await asyncio.sleep(0.5)
             
             room_info = self.rooms[room_jid]
             room_info['joined'] = True
@@ -201,7 +202,7 @@ class InfoBot(slixmpp.ClientXMPP):
         """Handle disconnection"""
         logger.warning("⚠️ Disconnected from XMPP server")
         await asyncio.sleep(5)
-        await self.connect()
+        # Don't try to reconnect here - let main loop handle it
     
     async def monitor_activity(self):
         """Monitor room activity and update status"""
@@ -330,6 +331,6 @@ class InfoBot(slixmpp.ClientXMPP):
         """Graceful disconnect"""
         try:
             logger.info("Disconnecting from XMPP server...")
-            await super().disconnect()
+            self.disconnect(send_close=True)
         except Exception as e:
             logger.error(f"Error during disconnect: {e}")
